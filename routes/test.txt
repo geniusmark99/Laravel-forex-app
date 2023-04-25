@@ -1,0 +1,36 @@
+class UsersController extends Controller
+{
+    public function index()
+    {
+        return Inertia::render('Users/Index', [
+            'users' => User::all(),
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        User::create(
+            $request->validate([
+                'name' => ['required', 'max:50'],
+                'email' => ['required', 'max:50', 'email'],
+            ])
+        );
+
+        return to_route('users.index');
+    }
+
+
+}
+
+
+// To redirect to anotehr route outside Inertia Endpoints:
+return Inertia::location($url);
+
+//f you're using Ziggy with Vue, it's helpful to make this function available as a custom $route property so you can use it directly in your templates.
+app.config.globalProperties.$route = route
+<Link :href="$route('users.create')">Create User</Link>
+
+
+
+
+
